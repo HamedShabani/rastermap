@@ -1,9 +1,9 @@
 import numpy as np
 import os
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore,QtWidgets
 
 ### custom QDialog which allows user to fill in ops and run suite2p!
-class RunWindow(QtGui.QDialog):
+class RunWindow(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(RunWindow, self).__init__(parent)
         self.setGeometry(50,50,600,600)
@@ -135,7 +135,7 @@ class RunWindow(QtGui.QDialog):
         self.textEdit.ensureCursorVisible()
         self.error = True
 
-class LineEdit(QtGui.QLineEdit):
+class LineEdit(QtWidgets.QLineEdit):
     def __init__(self,k,key,parent=None):
         super(LineEdit,self).__init__(parent)
         self.key = key

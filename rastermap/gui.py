@@ -3,7 +3,7 @@ import os
 import shutil
 import time
 import numpy as np
-from PyQt5 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore,QtWidgets
 import pyqtgraph as pg
 from pyqtgraph import GraphicsScene
 from scipy.stats import zscore
@@ -36,14 +36,14 @@ def rect_from_line(p,d):
     prect[-1,:] = prect[0,:]
     return prect
 
-class Slider(QtGui.QSlider):
+class Slider(QtWidgets.QSlider):
     def __init__(self, bid, parent=None):
         super(self.__class__, self).__init__()
         self.bid = bid
         self.setMinimum(0)
         self.setMaximum(100)
         self.setValue(parent.sat[bid]*200)
-        self.setTickPosition(QtGui.QSlider.TicksLeft)
+        self.setTickPosition(QtWidgets.QSlider.TicksLeft)
         self.setTickInterval(10)
         self.valueChanged.connect(lambda: self.level_change(parent,bid))
         self.setTracking(False)
@@ -61,13 +61,13 @@ class Slider(QtGui.QSlider):
         parent.win.show()
 
 # custom vertical label
-class VerticalLabel(QtGui.QWidget):
+class VerticalLabel(QtWidgets.QWidget):
     def __init__(self, text=None):
         super(self.__class__, self).__init__()
         self.text = text
 
     def paintEvent(self, event):
-        painter = QtGui.QPainter(self)
+        painter = QtWidgets.QPainter(self)
         painter.setPen(QtCore.Qt.white)
         painter.translate(0, 0)
         painter.rotate(90)
@@ -75,7 +75,7 @@ class VerticalLabel(QtGui.QWidget):
             painter.drawText(0, 0, self.text)
         painter.end()
 
-class MainW(QtGui.QMainWindow):
+class MainW(QtWidgets.QMainWindow):
     def __init__(self):
         super(MainW, self).__init__()
         pg.setConfigOptions(imageAxisOrder="row-major")
@@ -105,30 +105,30 @@ class MainW(QtGui.QMainWindow):
         self.loaded = False
 
         # ------ MENU BAR -----------------
-        loadMat =  QtGui.QAction("&Load data matrix", self)
+        loadMat =  QtWidgets.QAction("&Load data matrix", self)
         loadMat.setShortcut("Ctrl+L")
         loadMat.triggered.connect(lambda: self.load_mat(name=None))
         self.addAction(loadMat)
         # run rastermap from scratch
-        self.runRMAP = QtGui.QAction("&Run embedding algorithm", self)
+        self.runRMAP = QtWidgets.QAction("&Run embedding algorithm", self)
         self.runRMAP.setShortcut("Ctrl+R")
         self.runRMAP.triggered.connect(self.run_RMAP)
         self.addAction(self.runRMAP)
         self.runRMAP.setEnabled(False)
         # load processed data
-        loadProc = QtGui.QAction("&Load processed data", self)
+        loadProc = QtWidgets.QAction("&Load processed data", self)
         loadProc.setShortcut("Ctrl+P")
         loadProc.triggered.connect(lambda: self.load_proc(name=None))
         self.addAction(loadProc)
         # load a behavioral trace
-        self.loadBeh = QtGui.QAction(
+        self.loadBeh = QtWidgets.QAction(
             "Load behavior or stim trace (1D only)", self
         )
         self.loadBeh.triggered.connect(self.load_behavior)
         self.loadBeh.setEnabled(False)
         self.addAction(self.loadBeh)
         # export figure
-        exportFig = QtGui.QAction("Export as image (svg)", self)
+        exportFig = QtWidgets.QAction("Export as image (svg)", self)
         exportFig.triggered.connect(self.export_fig)
         exportFig.setEnabled(True)
         self.addAction(exportFig)
@@ -145,8 +145,8 @@ class MainW(QtGui.QMainWindow):
         #### --------- MAIN WIDGET LAYOUT --------- ####
         #pg.setConfigOption('background', 'w')
         #cwidget = EventWidget(self)
-        cwidget = QtGui.QWidget()
-        self.l0 = QtGui.QGridLayout()
+        cwidget = QtWidgets.QWidget()
+        self.l0 = QtWidgets.QGridLayout()
         cwidget.setLayout(self.l0)
         self.setCentralWidget(cwidget)
 
@@ -976,7 +976,7 @@ class MainW(QtGui.QMainWindow):
 
 def run():
     # Always start by initializing Qt (only once per application)
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     icon_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "logo.png"
     )
